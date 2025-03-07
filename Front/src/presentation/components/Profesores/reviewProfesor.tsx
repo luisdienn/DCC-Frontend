@@ -7,7 +7,7 @@ import ReviewCarousel from "./carouselReview";
 
 const tags = ["Explica bien", "Actitud", "Conversación", "Llega temprano"];
 
-const Review: React.FC = () => {
+const Review = () => {
   return (
     <>
       <Head>
@@ -44,7 +44,7 @@ const Review: React.FC = () => {
                 </button>
               </div>
             </div>
-            <h3 className="text-2xl font-semibold mt-4">
+            <h3 className="text-2xl text-black font-semibold mt-4">
               Robert Newman <span className="text-gray-400">, 27</span>
             </h3>
             <p className="text-gray-500 text-sm">CENFOTEC</p>

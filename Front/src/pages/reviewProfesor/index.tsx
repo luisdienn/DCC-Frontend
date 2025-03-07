@@ -1,5 +1,5 @@
 
-import ReviewComponent from "../presentation/components/reviewProfesor";
+import ReviewComponent from "../../presentation/components/Profesores/reviewProfesor";
 
 export default function reviewProfesor() {
   return (
