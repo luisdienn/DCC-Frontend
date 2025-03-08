@@ -1,17 +1,52 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import StarRating from "./starRating";
 import TagList from "./tagList";
 import ReviewCarousel from "./carouselReview";
+import { getProfessorById } from "@/domain/repositories/professorRepository";
+import { useRouter } from "next/router";
+import ModalCalificar from "./modalCalificar";
 
 const tags = ["Explica bien", "Actitud", "Conversación", "Llega temprano"];
 
 const Review = () => {
+  const [professor, setProfessor] = useState(null);
+  const [isCalificarProfesorOpen, setIsCalificarProfesorOpen] = useState(false);
+  // const [idProfesor, setId] = useState("");
+
+  const router = useRouter();
+  const { id } = router.query; // Obtiene el ID del profesor desde la URL
+
+  useEffect(() => {
+    if (!id) return; // Evita llamar a la API si el ID aún no está disponible
+
+    const fetchProfessor = async () => {
+      try {
+        const data = await getProfessorById(id as string);
+        console.log(data);
+        setProfessor(data);
+      } catch (err) {
+        console.error("Error al obtener el profesor:", err);
+      }
+    };
+
+    fetchProfessor();
+  }, [id]);
+
+  // --------- MODAL CALIFICAR PROFESOR --------- //
+  const openCalificarProfesorModal = () => {
+    setIsCalificarProfesorOpen(true);
+  };
+  const closeCalificarProfesorModal = () => {
+    setIsCalificarProfesorOpen(false);
+  };
+
+
   return (
     <>
       <Head>
-        <title>Review | Robert Newman</title>
+        <title>Review | {professor?.nombre}</title>
         <meta name="description" content="Perfil de Jessica Jones" />
       </Head>
       <main className="flex flex-col items-center justify-center min-h-screen w-full bg-gray-100">
@@ -29,7 +64,8 @@ const Review = () => {
             <div className="absolute top-[-30px] left-1/2 transform -translate-x-1/2">
               <img
                 className="w-32 h-32 rounded-full shadow"
-                src="https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/e40b6ea6361a1abe28f32e7910f63b66/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
+                // src="https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/e40b6ea6361a1abe28f32e7910f63b66/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
+                src="https://sm.ign.com/ign_pk/cover/a/avatar-gen/avatar-generations_rpge.jpg"
                 alt="Profile"
               />
             </div>
@@ -37,17 +73,21 @@ const Review = () => {
               <div className="text-center p-2 mr-36 md:mr-0">
                 <StarRating rating={4} /> {/* Estrellas estáticas (4/5) */}
               </div>
-         
+
               <div className="text-center">
-                <button className="bg-green-500 text-white md:mr-6 md:p-2 md:pl-4 md:pr-4 p-1 pl-3 pr-3 rounded-lg">
+                <button
+                  className="bg-green-500 text-white md:mr-6 md:p-2 md:pl-4 md:pr-4 p-1 pl-3 pr-3 rounded-lg"
+                  onClick={() => openCalificarProfesorModal()}
+                >
                   Calificar
                 </button>
               </div>
             </div>
             <h3 className="text-2xl text-black font-semibold mt-4">
-              Robert Newman <span className="text-gray-400">, 27</span>
+              {/* Robert Newman */}
+              {professor?.nombre + " " + professor?.apellidos}
             </h3>
-            <p className="text-gray-500 text-sm">CENFOTEC</p>
+            <p className="text-gray-500 text-sm">{professor?.universidad}</p>
             <br />
             <div className="">
               <TagList tags={tags} />
@@ -59,12 +99,15 @@ const Review = () => {
         {/* Pie de página */}
         <footer className="text-center py-6 text-gray-600 w-full mt-10">
           <p>
-            &copy; {new Date().getFullYear()} Codify. Todos los
-            derechos reservados.
+            &copy; {new Date().getFullYear()} Codify. Todos los derechos
+            reservados.
           </p>
         </footer>
+        {isCalificarProfesorOpen && (<ModalCalificar closeModal={closeCalificarProfesorModal} professorId={professor?.id} professorName={professor.nombre} />)}
+
       </main>
     </>
   );
 };
 export default Review;
+
