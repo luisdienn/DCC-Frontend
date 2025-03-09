@@ -1,70 +1,98 @@
-// import { faTimes } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-// // -------------------Componente de formulario para eliminar un usuario-------------------
-
-// // eslint-disable-next-line react/prop-types
-// const ModalEliminarUsuario = ({ closeModal, idProfessor }) => {
-
-//   // -------------------Maneja el envío del formulario para eliminar el usuario-------------------
-//   //   const handleSubmit = async (e) => {
-//   //     e.preventDefault();
-//   //     try {
-//   //       await EliminarUsuario({
-//   //         email,
-//   //       });
-//   //       closeModal();
-//   //     } catch {
-//   //       toast.error("Hubo un error al eliminar el usuario")
-//   //     }
-//   //   };
-
-//   // -------------------Renderiza el Modal-------------------
-//   return (
-//     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-//       <div className="max-w-2xl w-full space-y-8 p-10 bg-white rounded-xl shadow-xl z-10 relative">
-//         <form className="space-y-6" >
-//             {/* onSubmit={handleSubmit} */}
-//           <h1 className="text-center text-2xl font-bold text-gray-700">
-//             Eliminar Usuario
-//           </h1>
-
-//           <div className="flex justify-center items-center h-full">
-//             <div className="w-full sm:w-auto">
-//               <p>{idProfessor}</p> {/* Mostrar el email del usuario seleccionado */}
-//             </div>
-//           </div>
-
-//           <div className="flex justify-center">
-//             <button
-//               type="submit"
-//               className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-//             >
-//               Eliminar Usuario
-//             </button>
-//           </div>
-//         </form>
-//         <button
-//           className="absolute top-2 right-10 text-gray-400 hover:text-red-500 focus:outline-none"
-//           onClick={closeModal}
-//         >
-//           <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
 // export default ModalEliminarUsuario;
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StarIcon } from "@heroicons/react/24/solid";
+import { createReview } from "@/domain/repositories/reviewRepository";
 
 const ModalCalificar = ({ closeModal, professorId, professorName }) => {
-    const [rating, setRating] = useState(null);
-    const [hover, setHover] = useState(null);
-    const [totalStars, setTotalStars] = useState(5);
+  const [rating, setRating] = useState();
+  const [hover, setHover] = useState(null);
+  const [totalStars, setTotalStars] = useState(5);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [comentario, setComentario] = useState("");
+
+  const toggleTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else if (selectedTags.length < 2) {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleStarClick = (currentRating) => {
+    setRating(currentRating);
+    setSelectedTags([]); // 🔥 Vacía las etiquetas seleccionadas cuando se cambia la calificación
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (rating === 0) {
+      console.log("Debe seleccionar al menos una estrella");
+      return;
+    }
+    // Validar que el teléfono tenga 8 dígitos y la cédula 9
+    if (selectedTags.length === 0) {
+      console.log("Debe seleccionar al menos una etiqueta");
+      return;
+    }
+
+    const reviewData = {
+      estrellas: rating,
+      etiquetas: selectedTags,
+      comentario: comentario || "",
+      id_profesor: professorId,
+      fecha_creacion: new Date().toISOString(), 
+    };
+    console.log(reviewData);
+    console.log("ID del profesor:", typeof professorId, professorId);
+    try {
+      const response = await createReview(reviewData);
+      console.log("Reseña enviada con éxito:", response);
+      closeModal();
+    } catch (error) {
+      console.error("Error al enviar la reseña:", error);
+    }
+  };
+
+  const tagsByRating = {
+    1: [
+      "No explica bien",
+      "Mala actitud",
+      "No responde dudas",
+      "Clases aburridas",
+      "Demasiado exigente",
+    ],
+    2: [
+      "Podría mejorar",
+      "Falta claridad",
+      "Responde con demora",
+      "Desorganizado",
+      "Difícil de entender",
+    ],
+    3: [
+      "Aceptable",
+      "Explicaciones básicas",
+      "Cumple con lo justo",
+      "Poco dinámico",
+      "Regular comunicación",
+    ],
+    4: [
+      "Explica bien",
+      "Buena actitud",
+      "Responde dudas",
+      "Clases dinámicas",
+      "Buen ritmo",
+    ],
+    5: [
+      "Excelente docente",
+      "Clases entretenidas",
+      "Muy claro",
+      "Siempre disponible",
+      "Inspira a aprender",
+    ],
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
@@ -75,13 +103,10 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
         >
           <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
         </button>
-
         <h2 className="text-center text-xl font-bold text-gray-700">
           ¿Cómo calificas al profesor?
         </h2>
-
         <p className="text-center text-lg font-semibold">{professorName}</p>
-
         {/* Estrellas */}
         <div className="flex justify-center space-x-1 mt-4">
           {[...Array(totalStars)].map((star, index) => {
@@ -103,11 +128,62 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
                   }`}
                   onMouseEnter={() => setHover(currentRating)}
                   onMouseLeave={() => setHover(null)}
-                  onClick={() => setRating(currentRating)}
+                  onClick={() => handleStarClick(currentRating)}
                 />
               </label>
             );
           })}
+        </div>
+        {/* Mostrar etiquetas según el rating seleccionado */}
+        {rating && (
+          <div className="mt-2">
+            <h3 className="text-center text-gray-600 mb-3">
+              Selecciona etiquetas:
+            </h3>
+            <div className="flex flex-wrap justify-center gap-1">
+              {tagsByRating[rating].map((tag) => (
+                <button
+                  type="button"
+                  key={tag}
+                  className={`px-4 py-2 rounded-lg text-xs font-semibold text-center transition-colors duration-200 
+                    ${
+                      selectedTags.includes(tag)
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    } ${
+                    selectedTags.length >= 2 && !selectedTags.includes(tag)
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-gray-400"
+                  }`}
+                  onClick={() => toggleTag(tag)}
+                  disabled={
+                    selectedTags.length >= 2 && !selectedTags.includes(tag)
+                  }
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="mt-4">
+          <h3 className="text-gray-500">Añadir un comentario (Opcional)</h3>
+          <textarea
+            value={comentario}
+            onChange={(e) => setComentario(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          ></textarea>
+        </div>
+
+        <div className="mt-4 flex justify-center">
+          <button
+            type="button"
+            className="px-4 py-2 rounded-lg text-sm font-semibold text-center transition-colors 
+            duration-200 bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Enviar Calificación
+          </button>
         </div>
       </div>
     </div>

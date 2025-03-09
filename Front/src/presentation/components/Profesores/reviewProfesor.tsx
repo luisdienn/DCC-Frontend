@@ -5,33 +5,72 @@ import StarRating from "./starRating";
 import TagList from "./tagList";
 import ReviewCarousel from "./carouselReview";
 import { getProfessorById } from "@/domain/repositories/professorRepository";
+import { getReviewsByProfessorId } from "@/domain/repositories/reviewRepository";
 import { useRouter } from "next/router";
 import ModalCalificar from "./modalCalificar";
 
-const tags = ["Explica bien", "Actitud", "Conversación", "Llega temprano"];
-
 const Review = () => {
   const [professor, setProfessor] = useState(null);
+  const [reviews, setReviews] = useState(null);
   const [isCalificarProfesorOpen, setIsCalificarProfesorOpen] = useState(false);
-  // const [idProfesor, setId] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
 
   const router = useRouter();
   const { id } = router.query; // Obtiene el ID del profesor desde la URL
+
+  const totalEstrellas = (reviews || []).reduce(
+    (acc, review) => acc + review.estrellas,
+    0
+  ); // acc ACUMULADOR, el cero del final es el valor de acc
+  const promedioEstrellas =
+    reviews && reviews.length > 0 ? totalEstrellas / reviews.length : 0; // asegurar que reviews no sea NULL
 
   useEffect(() => {
     if (!id) return; // Evita llamar a la API si el ID aún no está disponible
 
     const fetchProfessor = async () => {
       try {
-        const data = await getProfessorById(id as string);
-        console.log(data);
-        setProfessor(data);
+        const professorData = await getProfessorById(id as string);
+        console.log(professorData);
+        setProfessor(professorData);
       } catch (err) {
         console.error("Error al obtener el profesor:", err);
       }
     };
 
+    const fetchReviewsProfessor = async () => {
+      try {
+        const reviewData = await getReviewsByProfessorId(id as string);
+        setReviews(reviewData);
+
+        const etiquetasContador: Record<string, number> = {};
+        reviewData.forEach((review) => {
+          review.etiquetas.forEach((etiqueta: string) => {
+            etiquetasContador[etiqueta] = // aqui accede a la clave del diccionario, que seria el nombre de la etiqueta
+              (etiquetasContador[etiqueta] || 0) + 1; // si existe trae el valor, o sea el numero, si no, se asigna como 0 para sumarle 1
+          });
+        });
+
+        const etiquetasOrdenadas = Object.keys(etiquetasContador)
+          .sort((a, b) => etiquetasContador[b] - etiquetasContador[a])
+          // "Motivador" vs "Paciente" → etiquetasContador["Motivador"] (5) - etiquetasContador["Paciente"] (3) = 2 (Motivador va antes)
+          // "Claro" vs "Explica bien" → etiquetasContador["Claro"] (4) - etiquetasContador["Explica bien"] (2) = 2 (Claro va antes)
+
+          // Primera comparación: a = "Paciente", b = "Motivador"
+          // Segunda comparación: a = "Explica bien", b = "Claro"
+          // Tercera comparación: a = "Motivador", b = "Explica bien"
+          // Y así sucesivamente...
+
+          .slice(0, 4); // Toma las primeras 4 etiquetas
+
+        setTags(etiquetasOrdenadas);
+      } catch (err) {
+        console.error("Error al obtener las reviews del profesor:", err);
+      }
+    };
+
     fetchProfessor();
+    fetchReviewsProfessor();
   }, [id]);
 
   // --------- MODAL CALIFICAR PROFESOR --------- //
@@ -41,7 +80,6 @@ const Review = () => {
   const closeCalificarProfesorModal = () => {
     setIsCalificarProfesorOpen(false);
   };
-
 
   return (
     <>
@@ -71,7 +109,8 @@ const Review = () => {
             </div>
             <div className="flex justify-around mt-6 text-gray-600">
               <div className="text-center p-2 mr-36 md:mr-0">
-                <StarRating rating={4} /> {/* Estrellas estáticas (4/5) */}
+                <StarRating rating={promedioEstrellas} />{" "}
+                {/* Estrellas estáticas (4/5) */}
               </div>
 
               <div className="text-center">
@@ -93,7 +132,7 @@ const Review = () => {
               <TagList tags={tags} />
             </div>
             <br />
-            <ReviewCarousel professor="Robert Newman" />
+            <ReviewCarousel reviews={reviews} />
           </div>
         </section>
         {/* Pie de página */}
@@ -103,11 +142,15 @@ const Review = () => {
             reservados.
           </p>
         </footer>
-        {isCalificarProfesorOpen && (<ModalCalificar closeModal={closeCalificarProfesorModal} professorId={professor?.id} professorName={professor.nombre} />)}
-
+        {isCalificarProfesorOpen && (
+          <ModalCalificar
+            closeModal={closeCalificarProfesorModal}
+            professorId={professor?.id}
+            professorName={professor.nombre}
+          />
+        )}
       </main>
     </>
   );
 };
 export default Review;
-
