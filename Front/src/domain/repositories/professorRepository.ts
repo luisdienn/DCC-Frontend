@@ -12,7 +12,7 @@ export const searchProfessorByName = async (name: string) => {
 
 export const getProfessorById = async (id: string) => {
     try {
-        const response = await publicApiClient.get(`/professors/${id}`);
+        const response = await publicApiClient.get(`/professors/getById/${id}`);
         console.log(response);
         console.log(response.data);
         return response.data;
@@ -22,34 +22,73 @@ export const getProfessorById = async (id: string) => {
     }
 };
 
+export const getProfessors = async () => {
+    try {
+        const response = await publicApiClient.get(`/professors/getAll`);
+        console.log(response);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Hubo un problema al obtener todos los profesores")
+    }
+};
+
+export const deleteProfessor = async (id: string) => {
+    try {
+        const response = await publicApiClient.delete(`/professors/delete/${id}`);
+        console.log(response);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Hubo un problema al eliminar el profesor")
+    }
+};
+
+export const updateProfessor = async (id: string) => {
+    try {
+        const response = await publicApiClient.put(`/professors/put/${id}`);
+        console.log(response);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Hubo un problema al actualizar el profesor")
+    }
+};
 
 
 
-
-// async def search_professors(self, name: str):
-// return await self.repository.get_professors_by_name_or_lastname(name)
-
-
-
-// #create
-
-// async def create_professor(self, professor: ProfessorModel):
-// return await self.repository.create_professor(professor)
-
-// #read
-// async def get_professor_by_id(self, professor_id: str):
-// return await self.repository.get_professor_by_id(professor_id)
-
-// async def get_professors(self):
-// return await self.repository.get_all_professors() 
+export const createProfessor = async (professorData) => {
+    try {
+        console.log(professorData);
+        const response = await publicApiClient.post(`/professors/create`, professorData, {
+            headers: { "Content-Type": "application/json" },
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Hubo un problema al crear el profesor")
+    }
+};
 
 
-// #update
 
-// async def update_professor(self, professor_id: str, professor: ProfessorModel):
-// return await self.repository.update_professor(professor_id, professor)
+// voy a meter aqui el repository de get courses porque lo ocupo para hacer pruebas
+// HAY QUE CAMBIARLO!!!!
 
-// #delete
-// async def delete_professor(self, professor_id: str):
-// return await self.repository.delete_professor(professor_id)
+export const getCourses = async () => {
+    try {
+        const response = await publicApiClient.get(`/courses`);
+        console.log(response);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        throw new Error("Hubo un problema al obtener todos los cursos")
+    }
+};
+
 
