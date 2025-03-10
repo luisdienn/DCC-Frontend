@@ -14,6 +14,16 @@ interface Review {
   etiquetas: string[];
 }
 
+
+const formatearFecha = (fecha: string): string => {
+  const fechaObj = new Date(fecha);
+  const dia = fechaObj.getDate().toString().padStart(2, "0"); 
+  const mes = (fechaObj.getMonth() + 1).toString().padStart(2, "0"); 
+  const año = fechaObj.getFullYear();
+  return `${dia}/${mes}/${año}`;
+};
+
+
 const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
   if (!reviews || reviews.length === 0) return null; // Evita errores si reviews es undefined o vacío
 
@@ -35,7 +45,7 @@ const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
         {reviews
           .filter(
             (review) => review.comentario && review.comentario.trim() !== ""
-          ) 
+          )
           .map((review, index) => (
             <SwiperSlide key={index}>
               <div className="flex-none w-full relative group rounded-lg overflow-hidden shadow-md bg-white border border-gray-300 p-6 h-[200px] flex flex-col justify-between">
@@ -43,9 +53,12 @@ const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
                   "{review.comentario}"
                 </p>
 
-                <div className="text-center">
+                <div className="text-center ">
                   <div className="flex justify-center mt-1 text-yellow-500">
                     <StarRating rating={review.estrellas} />
+                  </div>
+                  <div className="flex justify-center pt-1 text-xs text-gray-400">
+                      {formatearFecha(review.fecha_creacion)}
                   </div>
                 </div>
               </div>

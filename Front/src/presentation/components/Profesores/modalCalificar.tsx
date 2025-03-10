@@ -22,7 +22,7 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
 
   const handleStarClick = (currentRating) => {
     setRating(currentRating);
-    setSelectedTags([]); // 🔥 Vacía las etiquetas seleccionadas cuando se cambia la calificación
+    setSelectedTags([]); 
   };
 
   const handleSubmit = async (e) => {
@@ -32,7 +32,6 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
       console.log("Debe seleccionar al menos una estrella");
       return;
     }
-    // Validar que el teléfono tenga 8 dígitos y la cédula 9
     if (selectedTags.length === 0) {
       console.log("Debe seleccionar al menos una etiqueta");
       return;
