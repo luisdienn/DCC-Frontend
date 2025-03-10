@@ -1,12 +1,9 @@
-import ProfeAdmin from "@/presentation/components/ProfeAdmin";
+import ProfeAdmin from "@/presentation/components/Admin/ProfeAdmin";
 
 export default function adminprofesores() {
   return (
-    <main>
-        <h5 className="pt-32">PROFESORES</h5>
-        <div className=" pt-10">
+    <main >
       <ProfeAdmin />
-      </div>
     </main>
   );
 }

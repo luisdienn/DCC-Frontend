@@ -56,6 +56,7 @@
 // };
 
 // export default ModalEliminarUsuario;
+
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faStar } from "@fortawesome/free-solid-svg-icons";

@@ -1,4 +1,4 @@
-import { AdminPag } from "@/presentation/components/AdminPag";
+import { AdminPag } from "@/presentation/components/Admin/AdminPag";
 
 export default function admin() {
   return (
