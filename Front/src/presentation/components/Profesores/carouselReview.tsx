@@ -12,6 +12,7 @@ interface Review {
   comentario: string;
   estrellas: number;
   etiquetas: string[];
+  fecha_creacion:string;
 }
 
 
