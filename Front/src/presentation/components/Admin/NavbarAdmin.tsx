@@ -32,7 +32,7 @@ const NavbarAdmin = () => {
       <nav className="bg-[#fdfefe] dark:bg-[#00479b] shadow-md fixed w-full z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center">
+            <Link href="/admin" className="flex items-center">
               <img src="https://flowbite.com/docs/images/logo.svg" alt="Logo" className="h-6 mr-2" />
               <span className="text-xl font-semibold text-[#00479b] dark:text-[#e4e4e6]">Administrador</span>
             </Link>

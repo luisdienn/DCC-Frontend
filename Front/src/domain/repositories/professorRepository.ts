@@ -46,17 +46,22 @@ export const deleteProfessor = async (id: string) => {
     }
 };
 
-export const updateProfessor = async (id: string) => {
+export const updateProfessor = async (id: string, professorData) => {
     try {
-        const response = await publicApiClient.put(`/professors/put/${id}`);
-        console.log(response);
-        console.log(response.data);
+        console.log("Enviando PUT a API:", professorData);
+        
+        const response = await publicApiClient.put(`/professors/put/${id}`, professorData, {
+            headers: { "Content-Type": "application/json" },
+        });
+
+        console.log("Respuesta del backend:", response.data);
         return response.data;
     } catch (error) {
-        console.log(error);
-        throw new Error("Hubo un problema al actualizar el profesor")
+        console.error("Public API Error:", error.response?.data || error.message);
+        throw new Error("Hubo un problema al actualizar el profesor");
     }
 };
+
 
 
 

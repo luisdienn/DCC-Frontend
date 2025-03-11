@@ -34,6 +34,9 @@ const ProfeAdmin = () => {
   );
   const router = useRouter();
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+
 
   useEffect(() => {
     const fetchProfessors = async () => {
@@ -65,17 +68,9 @@ const ProfeAdmin = () => {
     try {
       console.log("Editando profesor con ID:", id);
       const data = await getProfessorById(id);
-
-      const formattedData = {
-        id: data.id,
-        nombre: data.nombre,
-        apellidos: data.apellidos,
-        correo: data.correo,
-        materias: data.materias.join(", "),
-      };
-
-      setProfessor(formattedData);
-      console.log("Profesor seleccionado:", formattedData);
+  
+      setSelectedProfessor(data);
+      setShowEditModal(true);
     } catch (err) {
       console.error("Error al obtener el profesor:", err);
     }
@@ -108,52 +103,57 @@ const ProfeAdmin = () => {
     setProfessors([...professors, { id: newProfessor.id, ...newProfessor }]);
   };
 
-  const columns = useMemo<MRT_ColumnDef<Person>[]>(
-    () => [
-      {
-        accessorKey: "nombre",
-        header: "Nombre",
-        size: 150,
-      },
-      {
-        accessorKey: "apellidos",
-        header: "Apellidos",
-        size: 150,
-      },
-      {
-        accessorKey: "correo",
-        header: "Correo",
-        size: 200,
-      },
-      {
-        accessorKey: "materias",
-        header: "Materias",
-        size: 200,
-      },
-      {
-        accessorKey: "editar",
-        header: "Acciones",
-        size: 200,
-        Cell: ({ row }) => (
-          <div className="flex space-x-2">
-            <button
-              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700"
-              onClick={() => handleEdit(row.original.id)}
-            >
-              Editar
-            </button>
-            <button
-              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-              onClick={() => handleDeleteClick(row.original)}
-            >
-              Borrar
-            </button>
-          </div>
-        ),
-      },
-    ],
-    []
+const handleProfessorUpdated = (updatedProfessor) => {
+  setProfessors((prevProfessors) =>
+    prevProfessors.map((prof) =>
+      prof.id === updatedProfessor.id ? updatedProfessor : prof
+    )
   );
+};
+
+  const columns = useMemo<MRT_ColumnDef<Person>[]>(() => [
+    {
+      accessorKey: "nombre",
+      header: "Nombre",
+      size: 150,
+    },
+    {
+      accessorKey: "apellidos",
+      header: "Apellidos",
+      size: 150,
+    },
+    {
+      accessorKey: "correo",
+      header: "Correo",
+      size: 200,
+    },
+    {
+      accessorKey: "materias",
+      header: "Materias",
+      size: 200,
+    },
+    {
+      accessorKey: "editar",
+      header: "Acciones",
+      size: 200,
+      Cell: ({ row }) => (
+        <div className="flex space-x-2">
+          <button
+            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700"
+            onClick={() => handleEdit(row.original.id)}
+          >
+            Editar
+          </button>
+          <button
+            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+            onClick={() => handleDeleteClick(row.original)}
+          >
+            Borrar
+          </button>
+        </div>
+      ),
+    },
+  ], []);
 
   const table = useMaterialReactTable({
     columns,
@@ -187,14 +187,33 @@ const ProfeAdmin = () => {
         />
       )}
 
-      {showAddModal && (
-        <ModalAgregarProfe
-          closeModal={() => setShowAddModal(false)}
-          onProfessorAdded={handleProfessorAdded}
-        />
-      )}
-    </div>
-  );
+
+    {showDeleteModal && selectedProfessor && (
+      <ModalEliminarProfe
+        closeModal={() => setShowDeleteModal(false)}
+        confirmDelete={handleDeleteConfirm}
+        professorName={`${selectedProfessor.nombre} ${selectedProfessor.apellidos}`}
+      />
+    )}
+
+{showAddModal && (
+  <ModalAgregarProfe
+    closeModal={() => setShowAddModal(false)}
+    onProfessorAdded={handleProfessorAdded}
+  />
+)}
+
+{showEditModal && selectedProfessor && (
+  <ModalEditarProfe
+    professor={selectedProfessor}
+    closeModal={() => setShowEditModal(false)}
+    onProfessorUpdated={handleProfessorUpdated}
+  />
+)}
+
+
+  </div>
+);
 };
 
 export default ProfeAdmin;
