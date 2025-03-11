@@ -75,7 +75,7 @@ const NavbarAdmin = () => {
               {isAuthenticated ? (
                 <>
                   <Image
-                    src="https://randomuser.me/api/portraits/men/43.jpg"
+                    src={userProfileImage}
                     alt="Perfil"
                     width={40}
                     height={40}
@@ -84,9 +84,7 @@ const NavbarAdmin = () => {
                   />
                   {isMenuOpenMobile && (
                     <div className="absolute right-0 mt-4 w-48 bg-white dark:bg-[#00479b] rounded-lg shadow-lg overflow-hidden">
-                      <Link href="/perfil" className="block px-4 py-2 text-[#006aea] dark:text-white hover:bg-gray-100 dark:hover:bg-[#006aea] flex items-center">
-                        <FontAwesomeIcon icon={faUser} className="mr-2" /> Perfil
-                      </Link>
+  
                       <button className="block w-full px-4 py-2 text-[#006aea] dark:text-white hover:bg-gray-100 dark:hover:bg-[#006aea] flex items-center">
                         <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />Cerrar sesión
                       </button>
@@ -114,34 +112,6 @@ const NavbarAdmin = () => {
           </div>
         </div>
       </nav>
-
-      {/* Navbar Móvil */}
-
-      <div className="md:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-[#00479b] shadow-md border-t">
-        {isAuthenticated ? (
-          <div className="flex justify-around py-3">
-            <Link href="/inicio" className={`flex flex-col items-center ${isActive("/inicio")}`}>
-              <FontAwesomeIcon icon={faHome} className="w-6 h-6" />
-              <span className="text-sm">Inicio</span>
-            </Link>
-            <Link href="/profesores" className={`flex flex-col items-center ${isActive("/profesores")}`}>
-              <FontAwesomeIcon icon={faUser} className="w-6 h-6" />
-              <span className="text-sm">Profesores</span>
-            </Link>
-            <Link href="/foro" className={`flex flex-col items-center ${isActive("/foro")}`}>
-              <FontAwesomeIcon icon={faComments} className="w-6 h-6" />
-              <span className="text-sm">Foro</span>
-            </Link>
-          </div>
-        ) : (
-          <div className="flex justify-center py-3">
-            <Link href="/inicio" className={`flex flex-col items-center ${isActive("/inicio")}`}>
-              <FontAwesomeIcon icon={faHome} className="w-6 h-6" />
-              <span className="text-sm">Inicio</span>
-            </Link>
-          </div>
-        )}
-      </div>
     </>
   );
 };
