@@ -44,7 +44,8 @@ export function AdminPag() {
           <p className="font-normal text-gray-400 pb-4">
             En este apartado vas a poder crear, modificar y eliminar profesores.
           </p>
-          <Button className=" border-neutral-950 dark:border-white text-gray-900 dark:text-white mt-2">
+
+          <Button href="/admin/profesores" className=" border-neutral-950 dark:border-white text-gray-900 dark:text-white mt-2">
             Ir a profesores
             <svg className="-mr-1 ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
