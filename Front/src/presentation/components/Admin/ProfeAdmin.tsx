@@ -24,7 +24,7 @@ const ProfeAdmin = () => {
   const [selectedProfessor, setSelectedProfessor] = useState<Person | null>(null);
   const router = useRouter();
   const [showAddModal, setShowAddModal] = useState(false);
-
+  const [showEditModal, setShowEditModal] = useState(false);
 
 
 
@@ -56,17 +56,9 @@ const ProfeAdmin = () => {
     try {
       console.log("Editando profesor con ID:", id);
       const data = await getProfessorById(id);
-
-      const formattedData = {
-        id: data.id,
-        nombre: data.nombre,
-        apellidos: data.apellidos,
-        correo: data.correo,
-        materias: data.materias.join(", "),
-      };
-
-      setProfessor(formattedData);
-      console.log("Profesor seleccionado:", formattedData);
+  
+      setSelectedProfessor(data);
+      setShowEditModal(true);
     } catch (err) {
       console.error("Error al obtener el profesor:", err);
     }
@@ -95,6 +87,14 @@ const ProfeAdmin = () => {
 
 const handleProfessorAdded = (newProfessor) => {
   setProfessors([...professors, { id: newProfessor.id, ...newProfessor }]);
+};
+
+const handleProfessorUpdated = (updatedProfessor) => {
+  setProfessors((prevProfessors) =>
+    prevProfessors.map((prof) =>
+      prof.id === updatedProfessor.id ? updatedProfessor : prof
+    )
+  );
 };
 
   const columns = useMemo<MRT_ColumnDef<Person>[]>(() => [
@@ -185,6 +185,15 @@ return (
     onProfessorAdded={handleProfessorAdded}
   />
 )}
+
+{showEditModal && selectedProfessor && (
+  <ModalEditarProfe
+    professor={selectedProfessor}
+    closeModal={() => setShowEditModal(false)}
+    onProfessorUpdated={handleProfessorUpdated}
+  />
+)}
+
 
   </div>
 );
