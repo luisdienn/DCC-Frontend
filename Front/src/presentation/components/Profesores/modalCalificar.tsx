@@ -6,12 +6,20 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { createReview } from "@/domain/repositories/reviewRepository";
 
-const ModalCalificar = ({ closeModal, professorId, professorName }) => {
+const ModalCalificar = ({
+  closeModal,
+  professorId,
+  professorName,
+  professorMaterias,
+}) => {
   const [rating, setRating] = useState();
   const [hover, setHover] = useState(null);
   const [totalStars, setTotalStars] = useState(5);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [comentario, setComentario] = useState("");
+  const [materia, setMateria] = useState(() =>
+    professorMaterias.length > 0 ? professorMaterias[0].nombre : ""
+  );
 
   const toggleTag = (tag: string) => {
     if (selectedTags.includes(tag)) {
@@ -23,7 +31,7 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
 
   const handleStarClick = (currentRating) => {
     setRating(currentRating);
-    setSelectedTags([]); 
+    setSelectedTags([]);
   };
 
   const handleSubmit = async (e) => {
@@ -43,7 +51,8 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
       etiquetas: selectedTags,
       comentario: comentario || "",
       id_profesor: professorId,
-      fecha_creacion: new Date().toISOString(), 
+      materia: materia,
+      fecha_creacion: new Date().toISOString(),
     };
     console.log(reviewData);
     console.log("ID del profesor:", typeof professorId, professorId);
@@ -166,6 +175,28 @@ const ModalCalificar = ({ closeModal, professorId, professorName }) => {
             </div>
           </div>
         )}
+        <div className="mt-4">
+          <h3 className="text-gray-500">Materia</h3>
+          <select
+            value={materia}
+            
+            onChange={(e) => {
+              console.log("Cambio detectado en select:", e.target.value); // 👀 Verifica si el evento se ejecuta
+              setMateria(e.target.value);
+            }}
+            className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-400 "
+          >
+            {professorMaterias.length > 0 ? (
+              professorMaterias.map((materia) => (
+                <option key={materia.id} value={materia.nombre}>
+                  {materia.nombre}
+                </option>
+              ))
+            ) : (
+              <option value="">No hay materias disponibles</option>
+            )}
+          </select> 
+        </div>
         <div className="mt-4">
           <h3 className="text-gray-500">Añadir un comentario (Opcional)</h3>
           <textarea

@@ -146,7 +146,7 @@ const Review = () => {
           <ModalCalificar
             closeModal={closeCalificarProfesorModal}
             professorId={professor?.id}
-            professorName={professor.nombre}
+            professorMaterias={professor?.materias || []}
           />
         )}
       </main>

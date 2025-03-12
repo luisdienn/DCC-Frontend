@@ -12,18 +12,16 @@ interface Review {
   comentario: string;
   estrellas: number;
   etiquetas: string[];
-  fecha_creacion:string;
+  fecha_creacion: string;
 }
-
 
 const formatearFecha = (fecha: string): string => {
   const fechaObj = new Date(fecha);
-  const dia = fechaObj.getDate().toString().padStart(2, "0"); 
-  const mes = (fechaObj.getMonth() + 1).toString().padStart(2, "0"); 
+  const dia = fechaObj.getDate().toString().padStart(2, "0");
+  const mes = (fechaObj.getMonth() + 1).toString().padStart(2, "0");
   const año = fechaObj.getFullYear();
   return `${dia}/${mes}/${año}`;
 };
-
 
 const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
   if (!reviews || reviews.length === 0) return null; // Evita errores si reviews es undefined o vacío
@@ -50,6 +48,9 @@ const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
           .map((review, index) => (
             <SwiperSlide key={index}>
               <div className="flex-none w-full relative group rounded-lg overflow-hidden shadow-md bg-white border border-gray-300 p-6 h-[200px] flex flex-col justify-between">
+                <div className="flex justify-center pt-1 text-xs text-gray-400">
+                  {review.materia}
+                </div>
                 <p className="text-gray-600 italic text-md text-center">
                   "{review.comentario}"
                 </p>
@@ -59,7 +60,7 @@ const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
                     <StarRating rating={review.estrellas} />
                   </div>
                   <div className="flex justify-center pt-1 text-xs text-gray-400">
-                      {formatearFecha(review.fecha_creacion)}
+                    {formatearFecha(review.fecha_creacion)}
                   </div>
                 </div>
               </div>
