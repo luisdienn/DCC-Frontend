@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faBookSkull } from "@fortawesome/free-solid-svg-icons";
 
 const ModalEliminarProfe = ({ closeModal, confirmDelete, materiaName }) => {
   return (
@@ -14,7 +14,7 @@ const ModalEliminarProfe = ({ closeModal, confirmDelete, materiaName }) => {
         </button>
 
         <div className="flex flex-col items-center">
-          <FontAwesomeIcon icon={faExclamationTriangle} className="text-red-500 text-4xl mb-2" />
+          <FontAwesomeIcon icon={faBookSkull} className="text-red-500 text-4xl mb-2" />
           <h2 className="text-center text-xl font-bold text-gray-700">
             ¿Estás seguro de eliminar esta materia?
           </h2>

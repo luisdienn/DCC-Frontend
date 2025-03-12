@@ -86,7 +86,7 @@ export const createProfessor = async (professorData) => {
 
 export const getCourses = async () => {
     try {
-        const response = await publicApiClient.get(`/courses`);
+        const response = await publicApiClient.get(`/courses/getAll`);
         console.log(response);
         console.log(response.data);
         return response.data;
@@ -95,5 +95,8 @@ export const getCourses = async () => {
         throw new Error("Hubo un problema al obtener todos los cursos")
     }
 };
+
+
+
 
 

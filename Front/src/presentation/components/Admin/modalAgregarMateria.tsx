@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faBookMedical } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select"; // Select2 equivalent for React
 import { createCourse } from "@/domain/repositories/coursesRepository";
 
@@ -42,7 +42,7 @@ const ModalAgregarMateria = ({ closeModal, onMateriaAdded }) => {
 
         <div className="flex flex-col items-center">
           <FontAwesomeIcon
-            icon={faUserPlus}
+            icon={faBookMedical}
             className="text-blue-500 text-4xl mb-2"
           />
           <h2 className="text-center text-xl font-bold text-gray-700">
