@@ -9,7 +9,7 @@ const Login = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/app"); // ⬅️ Redirige si ya está autenticado
+      router.push("/Profesores"); // ⬅️ Redirige si ya está autenticado
     }
   }, [status, router]);
 

@@ -14,11 +14,14 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isAdmin = router.pathname.startsWith("/admin");
   const isHome = router.pathname === "/";
+  const isLogin = router.pathname === "/login";
+
 
   return (
       <SessionProvider session={pageProps.session}>
           <ThemeProvider attribute="class">
-              {!isHome && (isAdmin ? <NavbarAdmin /> : <Navbar />)}
+              {!isHome && !isLogin && (isAdmin ? <NavbarAdmin /> : <Navbar />)}
+              
               <Component {...pageProps} />
           </ThemeProvider>
       </SessionProvider>

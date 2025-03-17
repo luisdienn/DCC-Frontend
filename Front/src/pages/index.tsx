@@ -15,7 +15,7 @@ const LandingPage = () => {
           <section className="text-center py-20 bg-blue-600 text-white">
             <h1 className="text-5xl font-bold">Consulta las Calificaciones de tus Profesores</h1>
             <p className="text-lg mt-4">Conoce las opiniones y puntuaciones de los profesores antes de tomar su clase.</p>
-            <Link href="/search">
+            <Link href="/login">
               <button className="mt-6 inline-block px-8 py-3 bg-yellow-500 text-lg font-semibold rounded-lg hover:bg-yellow-600 transition">
                 Ingresar
               </button>
@@ -42,7 +42,7 @@ const LandingPage = () => {
           {/* Call to Action */}
           <section className="bg-blue-600 text-white py-12 text-center">
             <h2 className="text-3xl font-semibold">¿Estás listo para conocer a tu próximo profesor?</h2>
-            <Link href="/search">
+            <Link href="/login">
               <button className="mt-6 inline-block px-8 py-3 bg-yellow-500 text-lg font-semibold rounded-lg hover:bg-yellow-600 transition">
                 Buscar Profesores
               </button>

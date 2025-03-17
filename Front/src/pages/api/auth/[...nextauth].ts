@@ -10,6 +10,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
   callbacks: {
     async signIn({ account, user }: { account: Account | null; user: User }) {
       if (account?.provider === "google") {
