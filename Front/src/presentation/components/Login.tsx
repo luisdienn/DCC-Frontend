@@ -29,7 +29,7 @@ const Login = () => {
         <form className="mt-6">
           <button
             type="button"
-            onClick={() => signIn("google")} 
+            onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/Profesores' })} 
             className="w-full bg-[#006aea] dark:bg-[#00479b] text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-[#00479b] dark:hover:bg-[#006aea] transition"
           >
             Iniciar Sesión con Google
