@@ -1,17 +1,18 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome, faUser, faComments, faCog, faSignOutAlt, faMoon, faSun,
+  faHome, faUser, faComments, faSignOutAlt, faMoon, faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useNavbar } from "@/application/hooks/useNavbar";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { data: session } = useSession();
   const {
-    isAuthenticated,
     isMenuOpenDesktop,
     setIsMenuOpenDesktop,
     isMenuOpenMobile,
@@ -22,9 +23,9 @@ const Navbar = () => {
     menuRefMobile,
   } = useNavbar();
 
-  const userProfileImage = "https://randomuser.me/api/portraits/men/43.jpg";
+  const isAuthenticated = !!session;
+  const userProfileImage = session?.user?.image || "https://randomuser.me/api/portraits/men/43.jpg";
 
-  // Función para determinar si un enlace está activo
   const isActive = (path: string) => pathname === path ? "text-[#006aea] font-bold dark:text-white" : "text-[#00479b] dark:text-[#e4e4e6]";
 
   return (
@@ -36,7 +37,6 @@ const Navbar = () => {
               <img src="CenfoScore.png" alt="Logo" className="h-12 mr-2" />
               <span className="text-xl font-semibold text-[#00479b] dark:text-[#e4e4e6]">CenfoScore</span>
             </Link>
-
 
             <div className="hidden md:flex items-center space-x-6">
                 <>
@@ -63,7 +63,7 @@ const Navbar = () => {
                           <FontAwesomeIcon icon={faUser} className="mr-3" />
                           Perfil
                         </Link>
-                        <button className="block w-full text-left px-6 py-3 text-[#00479b] dark:text-[#e4e4e6] hover:bg-[#e4e4e6] dark:hover:bg-[#006aea] flex items-center" onClick={() => console.log("Cerrar sesión")}>
+                        <button className="block w-full text-left px-6 py-3 text-[#00479b] dark:text-[#e4e4e6] hover:bg-[#e4e4e6] dark:hover:bg-[#006aea] flex items-center" onClick={() => signOut()}>
                           <FontAwesomeIcon icon={faSignOutAlt} className="mr-3" />
                           Cerrar sesión
                         </button>
@@ -81,7 +81,7 @@ const Navbar = () => {
             <div className="md:hidden relative" ref={menuRefMobile}>
                 <>
                   <Image
-                    src="https://randomuser.me/api/portraits/men/43.jpg"
+                    src={userProfileImage}
                     alt="Perfil"
                     width={40}
                     height={40}
@@ -93,8 +93,8 @@ const Navbar = () => {
                       <Link href="/perfil" className="block px-4 py-2 text-[#006aea] dark:text-white hover:bg-gray-100 dark:hover:bg-[#006aea] flex items-center">
                         <FontAwesomeIcon icon={faUser} className="mr-2" /> Perfil
                       </Link>
-                      <button className="block w-full px-4 py-2 text-[#006aea] dark:text-white hover:bg-gray-100 dark:hover:bg-[#006aea] flex items-center">
-                        <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />Cerrar sesión
+                      <button className="block w-full px-4 py-2 text-[#006aea] dark:text-white hover:bg-gray-100 dark:hover:bg-[#006aea] flex items-center" onClick={() => signOut()}>
+                        <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Cerrar sesión
                       </button>
                       <div className="border-t dark:border-gray-600"></div>
                       <button className="block w-full px-4 py-2 text-[#006aea] dark:text-white hover:bg-gray-100 dark:hover:bg-[#006aea] flex items-center" onClick={toggleDarkMode}>
