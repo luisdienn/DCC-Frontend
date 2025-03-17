@@ -63,7 +63,7 @@ const Navbar = () => {
                           <FontAwesomeIcon icon={faUser} className="mr-3" />
                           Perfil
                         </Link>
-                        <button className="block w-full text-left px-6 py-3 text-[#00479b] dark:text-[#e4e4e6] hover:bg-[#e4e4e6] dark:hover:bg-[#006aea] flex items-center" onClick={() => signOut()}>
+                        <button className="block w-full text-left px-6 py-3 text-[#00479b] dark:text-[#e4e4e6] hover:bg-[#e4e4e6] dark:hover:bg-[#006aea] flex items-center" onClick={() => signOut({ callbackUrl: "/" })}>
                           <FontAwesomeIcon icon={faSignOutAlt} className="mr-3" />
                           Cerrar sesión
                         </button>
