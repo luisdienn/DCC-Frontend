@@ -9,9 +9,13 @@ const Login = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/Profesores"); // ⬅️ Redirige si ya está autenticado
+      if (session?.user?.email === "ehidalgoh@ucenfotec.ac.cr") {
+        router.push("/admin");
+      } else {
+        router.push("/Profesores");
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-[#fdfefe] dark:bg-[#002855]">

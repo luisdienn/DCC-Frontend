@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user }: { account: Account | null; user: User }) {
       if (account?.provider === "google") {
-        const response = await fetch("http://localhost:8000/auth/google-login", {
+        const response = await fetch("http://localhost:8080/auth/google-login", {
           method: "POST",  // 📌 Asegurar que es POST
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: user.email, name: user.name }),
@@ -27,9 +27,9 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async redirect({ baseUrl }) {
-      return `${baseUrl}/`;
-    },
+    // async redirect({ baseUrl }) {
+    //   return `${baseUrl}/Profesores`;
+    // },
     async session({ session }) {
       console.log("📌 Session Data:", session);
       return session;
