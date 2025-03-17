@@ -1,21 +1,23 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname(); // ✅ Obtiene la ruta actual
+
 
   useEffect(() => {
-    if (status === "authenticated") {
-      if (session?.user?.email === "ehidalgoh@ucenfotec.ac.cr") {
-        router.push("/admin");
-      } else {
-        router.push("/Profesores");
+    if (status === "authenticated" && session?.user?.email) {
+      const destination = session.user.email === "ehidalgoh@ucenfotec.ac.cr" ? "/admin" : "/Profesores";
+
+      if (pathname !== destination) { // ✅ Compara con la ruta actual
+        router.replace(destination);
       }
     }
-  }, [status, router, session]);
+  }, [status, session, router, pathname]); // ✅ Agrega pathname a las dependencias
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-[#fdfefe] dark:bg-[#002855]">
