@@ -4,7 +4,7 @@ import { faTimes, faPencil } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select"; // Select2 equivalent for React
 import { updateMateria } from "@/domain/repositories/coursesRepository";
 
-const ModalEditarMateria = ({ closeModal, Materia }) => {
+const ModalEditarMateria = ({ closeModal, Materia, onMateriaUpdated}) => {
   const [courseName, setCourseName] = useState(Materia.nombre || "");
 
   const handleSubmit = async () => {
@@ -12,6 +12,7 @@ const ModalEditarMateria = ({ closeModal, Materia }) => {
       console.log("Enviando datos:", courseName);
       const response = await updateMateria(Materia.id, courseName);
       console.log("Materia actualizada:", response);
+      onMateriaUpdated(response);
       closeModal();
     } catch (error) {
       console.error("Error actualizando la materia:", error);

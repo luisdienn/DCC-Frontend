@@ -203,14 +203,6 @@ const handleProfessorUpdated = async() => {
         />
       )}
 
-      {showDeleteModal && selectedProfessor && (
-        <ModalEliminarProfe
-          closeModal={() => setShowDeleteModal(false)}
-          confirmDelete={handleDeleteConfirm}
-          professorName={`${selectedProfessor.nombre} ${selectedProfessor.apellidos}`}
-        />
-      )}
-
       {showAddModal && (
         <ModalAgregarProfe
           closeModal={() => setShowAddModal(false)}

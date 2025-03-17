@@ -31,24 +31,25 @@ const MateriaAdmin = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [isEditarMateriaOpen, setIsEditarMateriaOpen] = useState(false);
 
+
+  const fetchCourses = async () => {
+    try {
+      const data = await getCourses();
+
+      const formattedData = data.map((course: any) => ({
+        id: course.id,
+        nombre: course.nombre,
+      }));
+
+      setMaterias(formattedData);
+    } catch (err) {
+      console.error("Error al obtener las materias:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const data = await getCourses();
-
-        const formattedData = data.map((course: any) => ({
-          id: course.id,
-          nombre: course.nombre,
-        }));
-
-        setMaterias(formattedData);
-      } catch (err) {
-        console.error("Error al obtener las materias:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchCourses();
   }, []);
 
@@ -86,8 +87,12 @@ const MateriaAdmin = () => {
     setShowAddModal(true);
   };
 
-  const handleMateriaAdded = (newCourse) => {
-    setMaterias([...materias, { id: newCourse.id, ...newCourse }]);
+  const handleMateriaAdded = async() => {
+    await fetchCourses();
+  };
+
+  const handleMateriaUpdated = async() => {
+    await fetchCourses();
   };
 
   // --------- MODAL EDITAR MATERIA --------- //
@@ -193,6 +198,7 @@ const MateriaAdmin = () => {
         <ModalEditarMateria
           closeModal={closeEditarMateriaModal}
           Materia={selectedMateria}
+          onMateriaUpdated={handleMateriaUpdated}
         />
       )}
     </main>

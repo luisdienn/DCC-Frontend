@@ -23,7 +23,7 @@ const ModalAgregarMateria = ({ closeModal, onMateriaAdded }) => {
       console.log("Enviando datos:", formattedData);
       const response = await createCourse(formattedData);
       console.log("Materia creada:", response);
-      onMateriaAdded(response); // Actualizar el estado del padre si es necesario
+      onMateriaAdded(response); 
       closeModal();
     } catch (error) {
       console.error("Error creando la materia:", error);
