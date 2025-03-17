@@ -32,9 +32,9 @@ const Navbar = () => {
       <nav className="bg-[#fdfefe] dark:bg-[#00479b] shadow-md fixed w-full z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center">
-              <img src="https://flowbite.com/docs/images/logo.svg" alt="Logo" className="h-6 mr-2" />
-              <span className="text-xl font-semibold text-[#00479b] dark:text-[#e4e4e6]">Nombre</span>
+            <Link href="/Profesores" className="flex items-center">
+              <img src="CenfoScore.png" alt="Logo" className="h-12 mr-2" />
+              <span className="text-xl font-semibold text-[#00479b] dark:text-[#e4e4e6]">CenfoScore</span>
             </Link>
 
 
@@ -43,9 +43,9 @@ const Navbar = () => {
                   <Link href="/Profesores" className={`${isActive("/profesores")} hover:text-[#006aea] transition`}>
                     Profesores
                   </Link>
-                  <Link href="/foro" className={`${isActive("/foro")} hover:text-[#006aea] transition`}>
+                  {/* <Link href="/foro" className={`${isActive("/foro")} hover:text-[#006aea] transition`}>
                     Foro
-                  </Link>
+                  </Link> */}
 
                   <div className="relative" ref={menuRefDesktop}>
                     <Image
@@ -117,10 +117,10 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faUser} className="w-6 h-6" />
               <span className="text-sm">Profesores</span>
             </Link>
-            <Link href="/foro" className={`flex flex-col items-center ${isActive("/foro")}`}>
+            {/* <Link href="/foro" className={`flex flex-col items-center ${isActive("/foro")}`}>
               <FontAwesomeIcon icon={faComments} className="w-6 h-6" />
               <span className="text-sm">Foro</span>
-            </Link>
+            </Link> */}
           </div>
       </div>
     </>
