@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select"; 
-import { getCourses, updateProfessor } from "@/domain/repositories/professorRepository";
+import { updateProfessor } from "@/domain/repositories/professorRepository";
+import { getCourses } from "@/domain/repositories/coursesRepository";
 
 const ModalEditarProfe = ({ professor, closeModal, onProfessorUpdated }) => {
   const [professorData, setProfessorData] = useState({

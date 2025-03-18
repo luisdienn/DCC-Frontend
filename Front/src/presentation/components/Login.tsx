@@ -11,7 +11,7 @@ const Login = () => {
   useEffect(() => {
     if (status === "authenticated" && session?.user?.email) {
       const destination =
-        session.user.email === "ldienb@ucenfotec.ac.cr"
+        session.user.email === "ehidalgoh@ucenfotec.ac.cr"
           ? "/admin"
           : "/Profesores";
 

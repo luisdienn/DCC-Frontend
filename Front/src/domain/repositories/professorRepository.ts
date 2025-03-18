@@ -80,23 +80,3 @@ export const createProfessor = async (professorData) => {
 };
 
 
-
-// voy a meter aqui el repository de get courses porque lo ocupo para hacer pruebas
-// HAY QUE CAMBIARLO!!!!
-
-export const getCourses = async () => {
-    try {
-        const response = await publicApiClient.get(`/courses/getAll`);
-        console.log(response);
-        console.log(response.data);
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        throw new Error("Hubo un problema al obtener todos los cursos")
-    }
-};
-
-
-
-
-

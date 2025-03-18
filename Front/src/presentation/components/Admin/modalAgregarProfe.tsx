@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select"; // Select2 equivalent for React
-import { createProfessor,getCourses } from "@/domain/repositories/professorRepository";
+import { createProfessor } from "@/domain/repositories/professorRepository";
+import { getCourses } from "@/domain/repositories/coursesRepository";
 
 const ModalAgregarProfe = ({ closeModal, onProfessorAdded }) => {
   const [professorData, setProfessorData] = useState({
