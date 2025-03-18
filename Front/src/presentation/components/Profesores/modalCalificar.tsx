@@ -60,6 +60,7 @@ const ModalCalificar = ({
       const response = await createReview(reviewData);
       console.log("Reseña enviada con éxito:", response);
       closeModal();
+      window.location.reload();
     } catch (error) {
       console.error("Error al enviar la reseña:", error);
     }

@@ -56,7 +56,7 @@ const NavbarAdmin = () => {
                   <div className="absolute right-0 mt-2 w-56 bg-[#fdfefe] dark:bg-[#00479b] rounded-lg shadow-lg overflow-hidden">
                     <button
                       className="block w-full text-left px-6 py-3 text-[#00479b] dark:text-[#e4e4e6] hover:bg-[#e4e4e6] dark:hover:bg-[#006aea] flex items-center"
-                      onClick={() => signOut()}
+                      onClick={() => signOut({ callbackUrl: "/" })}
                     >
                       <FontAwesomeIcon icon={faSignOutAlt} className="mr-3" />
                       Cerrar sesión
