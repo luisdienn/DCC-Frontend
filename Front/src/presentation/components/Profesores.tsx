@@ -62,7 +62,7 @@ const Profesores = () => {
 
   return (
     <main className="w-full min-h-screen dark:bg-gray-900 bg-white">
-      <section className="relative w-full p-4 bg-gradient-to-r from-blue-300 to-indigo-500 dark:from-blue-700 dark:to-indigo-800">
+      <section className="relative w-full p-4 bg-gradient-to-r from-blue-400 to-blue-700 dark:from-gray-900 dark:to-gray-900">
         <div className="absolute inset-0 flex justify-center items-center">
           <div className="absolute w-32 h-32 bg-white opacity-10 rounded-full top-10 left-16 dark:bg-gray-600"></div>
           <div className="absolute w-24 h-24 bg-white opacity-10 rounded-full top-20 right-20 dark:bg-gray-600"></div>

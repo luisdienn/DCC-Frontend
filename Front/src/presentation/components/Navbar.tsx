@@ -40,7 +40,7 @@ const Navbar = () => {
 
             <div className="hidden md:flex items-center space-x-6">
                 <>
-                  <Link href="/Profesores" className={`${isActive("/profesores")} hover:text-[#006aea] transition`}>
+                  <Link href="/Profesores" className={`${isActive("/Profesores")} hover:text-[#006aea] transition`}>
                     Profesores
                   </Link>
                   {/* <Link href="/foro" className={`${isActive("/foro")} hover:text-[#006aea] transition`}>
@@ -113,7 +113,7 @@ const Navbar = () => {
 
       <div className="md:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-[#00479b] shadow-md border-t z-10">
           <div className="flex justify-around py-3">
-            <Link href="/Profesores" className={`flex flex-col items-center ${isActive("/profesores")}`}>
+            <Link href="/Profesores" className={`flex flex-col items-center ${isActive("/Profesores")}`}>
               <FontAwesomeIcon icon={faUser} className="w-6 h-6" />
               <span className="text-sm">Profesores</span>
             </Link>
