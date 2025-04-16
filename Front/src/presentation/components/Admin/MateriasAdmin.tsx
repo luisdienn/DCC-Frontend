@@ -16,117 +16,90 @@ import ModalEditarMateria from "./modalEditarMateria";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Button } from "flowbite-react";
 
-type Course = {
-  nombre: string;
-  id: string;
-};
+type Course = { nombre: string; id: string };
 
 const MateriaAdmin = () => {
   const [materias, setMaterias] = useState<Course[]>([]);
-  const [materia, setMateria] = useState<Course | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedMateria, setSelectedMateria] = useState<Course | null>(null);
-  const router = useRouter();
   const [showAddModal, setShowAddModal] = useState(false);
-  const [isEditarMateriaOpen, setIsEditarMateriaOpen] = useState(false);
+  const [isEditarOpen, setIsEditarOpen] = useState(false);
 
-
-  const fetchCourses = async () => {
-    try {
-      const data = await getCourses();
-
-      const formattedData = data.map((course: any) => ({
-        id: course.id,
-        nombre: course.nombre,
-      }));
-
-      setMaterias(formattedData);
-    } catch (err) {
-      console.error("Error al obtener las materias:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Fetch materias
   useEffect(() => {
-    fetchCourses();
+    (async () => {
+      try {
+        const data = await getCourses();
+        setMaterias(data.map((c: any) => ({ id: c.id, nombre: c.nombre })));
+      } catch (err) {
+        console.error("Error al obtener las materias:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
+  // Handlers
   const handleEdit = async (id: string) => {
     try {
-      console.log("Editando la materia con ID:", id);
       const data = await getCourseById(id);
-
       setSelectedMateria(data);
-      console.log("Materia seleccionado:", data);
-      openEditarMateriaModal();
+      setIsEditarOpen(true);
     } catch (err) {
       console.error("Error al obtener la materia:", err);
     }
   };
-
   const handleDeleteClick = (course: Course) => {
     setSelectedMateria(course);
     setShowDeleteModal(true);
   };
-
   const handleDeleteConfirm = async () => {
     if (!selectedMateria) return;
     try {
-      console.log("Eliminando materia con ID:", selectedMateria.id);
       await deleteCourse(selectedMateria.id);
-      setMaterias((prev) => prev.filter((p) => p.id !== selectedMateria.id));
-      setShowDeleteModal(false);
+      setMaterias(prev => prev.filter(m => m.id !== selectedMateria.id));
     } catch (err) {
       console.error("Error al borrar la materia:", err);
+    } finally {
+      setShowDeleteModal(false);
     }
   };
-
-  const handleAddMateriaClick = () => {
-    setShowAddModal(true);
+  const handleAddMateriaClick = () => setShowAddModal(true);
+  const onMateriaAdded = async () => {
+    setIsLoading(true);
+    await getCourses()
+      .then(data => setMaterias(data.map((c: any) => ({ id: c.id, nombre: c.nombre }))));
+    setIsLoading(false);
   };
+  const onMateriaUpdated = onMateriaAdded;
 
-  const handleMateriaAdded = async() => {
-    await fetchCourses();
-  };
-
-  const handleMateriaUpdated = async() => {
-    await fetchCourses();
-  };
-
-  // --------- MODAL EDITAR MATERIA --------- //
-  const openEditarMateriaModal = () => {
-    setIsEditarMateriaOpen(true);
-  };
-  const closeEditarMateriaModal = () => {
-    setIsEditarMateriaOpen(false);
-  };
-
+  // Columns
   const columns = useMemo<MRT_ColumnDef<Course>[]>(
     () => [
       {
         accessorKey: "nombre",
         header: "Nombre de la Materia",
-        size: 250,
       },
       {
         accessorKey: "acciones",
         header: "Acciones",
-        size: 250,
-        muiTableHeadCellProps: { sx: { textAlign: "right", pl: 75 } },
-        muiTableBodyCellProps: { sx: { textAlign: "right", pr: 0 } },
+        enableSorting: false,
+        enableColumnActions: false,
+        muiTableHeadCellProps: { sx: { textAlign: "right" } },
+        muiTableBodyCellProps: { sx: { textAlign: "right" } },
         Cell: ({ row }) => (
-          <div className="flex justify-end md:pr-24 space-x-2">
+          <div className="flex flex-col sm:flex-row justify-end sm:space-x-2 space-y-2 sm:space-y-0">
             <button
               type="button"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
               onClick={() => handleEdit(row.original.id)}
             >
               Editar
             </button>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+              type="button"
+              className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-red-500 text-white rounded-lg hover:bg-red-700 transition"
               onClick={() => handleDeleteClick(row.original)}
             >
               Borrar
@@ -138,67 +111,60 @@ const MateriaAdmin = () => {
     []
   );
 
-  const table = useMaterialReactTable({
-    columns,
-    data: materias,
-  });
+  // Table instance
+  const table = useMaterialReactTable({ columns, data: materias });
 
   return (
-    <main className=" items-center w-full bg-gray-100">
-      <section className="relative w-full md:h-[34vh] h-[20vh] p-4 bg-gradient-to-r from-blue-300 to-indigo-500">
-        {/* Círculos decorativos */}
-        <div className="absolute inset-0 flex justify-center items-center">
+    <main className="flex flex-col items-center w-full bg-gray-100">
+      {/* Header */}
+      <section className="relative w-full h-[20vh] md:h-[34vh] p-4 bg-gradient-to-r from-blue-300 to-indigo-500">
+        {/* Círculos decorativos solo en md+ */}
+        <div className="hidden md:flex absolute inset-0 justify-center items-center pointer-events-none">
           <div className="absolute w-32 h-32 bg-white opacity-10 rounded-full top-10 left-16"></div>
           <div className="absolute w-24 h-24 bg-white opacity-10 rounded-full top-20 right-20"></div>
         </div>
-
-        <h1 className="pt-28 text-3xl text-white font-bold text-center mb-6">
+        <h1 className="pt-20 md:pt-28 text-2xl md:text-3xl text-white font-bold text-center mb-4">
           MATERIAS
         </h1>
         <div className="flex justify-center">
           <button
             type="button"
-            className=" flex justify-center  z-10 items-center mb-6 bg-white text-black border-black border- w-10 h-10 rounded-full hover:bg-green-600 transition duration-200 shadow-lg"
+            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white text-black border border-white rounded-full hover:border-green-600 hover:bg-green-600 transition duration-200 shadow-lg"
             onClick={handleAddMateriaClick}
           >
-            <PlusIcon className="w-6 h-6" />
+            <PlusIcon className="w-5 h-5 md:w-6 md:h-6" />
           </button>
         </div>
       </section>
 
-      {/* Contenedor de la tabla */}
-      <div className="max-w-10xl w-full max-w-6xl justify-center text-center mx-auto p-6 bg-white shadow-lg rounded-lg overflow-hidden">
+      {/* Tabla */}
+      <div className="w-full max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6 overflow-x-auto">
         {isLoading ? (
-          <p className="text-center text-lg text-gray-600">
-            Cargando Materias...
-          </p>
+          <p className="text-center text-lg text-gray-600">Cargando Materias...</p>
         ) : (
-          <div className="overflow-x-auto">
-            <MaterialReactTable table={table} />
-          </div>
+          <MaterialReactTable table={table} />
         )}
       </div>
 
+      {/* Modales */}
       {showDeleteModal && selectedMateria && (
         <ModalEliminarMateria
           closeModal={() => setShowDeleteModal(false)}
           confirmDelete={handleDeleteConfirm}
-          materiaName={`${selectedMateria.nombre}`}
+          materiaName={selectedMateria.nombre}
         />
       )}
-
       {showAddModal && (
         <ModalAgregarMateria
           closeModal={() => setShowAddModal(false)}
-          onMateriaAdded={handleMateriaAdded}
+          onMateriaAdded={onMateriaAdded}
         />
       )}
-
-      {isEditarMateriaOpen && (
+      {isEditarOpen && selectedMateria && (
         <ModalEditarMateria
-          closeModal={closeEditarMateriaModal}
+          closeModal={() => setIsEditarOpen(false)}
           Materia={selectedMateria}
-          onMateriaUpdated={handleMateriaUpdated}
+          onMateriaUpdated={onMateriaUpdated}
         />
       )}
     </main>
