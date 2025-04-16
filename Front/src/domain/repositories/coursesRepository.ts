@@ -2,7 +2,7 @@ import publicApiClient from "../../infrastructure/api/client/publicClient";
 
 export const getCourses = async () => {
   try {
-    const response = await publicApiClient.get(`courses/getAll`);
+    const response = await publicApiClient.get(`/courses/getAll`);
     console.log(response);
     console.log(response.data);
     return response.data;
