@@ -1,5 +1,3 @@
-// export default ModalEliminarUsuario;
-
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -11,9 +9,9 @@ const ModalCalificar = ({
   professorId,
   professorName,
   professorMaterias,
-}) => {
-  const [rating, setRating] = useState();
-  const [hover, setHover] = useState(null);
+}: any) => {
+  const [rating, setRating] = useState<number | null>(null);
+  const [hover, setHover] = useState<number | null>(null);
   const [totalStars, setTotalStars] = useState(5);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [comentario, setComentario] = useState("");
@@ -29,15 +27,15 @@ const ModalCalificar = ({
     }
   };
 
-  const handleStarClick = (currentRating) => {
+  const handleStarClick = (currentRating: number) => {
     setRating(currentRating);
     setSelectedTags([]);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (rating === 0) {
+    if (rating === 0 || rating === null) {
       console.log("Debe seleccionar al menos una estrella");
       return;
     }
@@ -61,12 +59,12 @@ const ModalCalificar = ({
       console.log("Reseña enviada con éxito:", response);
       closeModal();
       window.location.reload();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error al enviar la reseña:", error);
     }
   };
 
-  const tagsByRating = {
+  const tagsByRating: { [key: number]: string[] } = {
     1: [
       "No explica bien",
       "Mala actitud",
@@ -117,9 +115,10 @@ const ModalCalificar = ({
           ¿Cómo calificas al profesor?
         </h2>
         <p className="text-center text-lg font-semibold">{professorName}</p>
+        
         {/* Estrellas */}
         <div className="flex justify-center space-x-1 mt-4">
-          {[...Array(totalStars)].map((star, index) => {
+          {Array.from({ length: totalStars }).map((_, index) => {
             const currentRating = index + 1;
             return (
               <label key={index} className="cursor-pointer">
@@ -132,7 +131,7 @@ const ModalCalificar = ({
                 />
                 <StarIcon
                   className={`w-8 h-8 transition-colors duration-200 ${
-                    currentRating <= (hover || rating)
+                    currentRating <= (hover ?? rating ?? 0)
                       ? "text-yellow-400"
                       : "text-gray-300"
                   }`}
@@ -144,14 +143,15 @@ const ModalCalificar = ({
             );
           })}
         </div>
+
         {/* Mostrar etiquetas según el rating seleccionado */}
-        {rating && (
+        {typeof rating === "number" && (
           <div className="mt-2">
             <h3 className="text-center text-gray-600 mb-3">
               Selecciona etiquetas:
             </h3>
             <div className="flex flex-wrap justify-center gap-1">
-              {tagsByRating[rating].map((tag) => (
+              {tagsByRating[rating]?.map((tag) => (
                 <button
                   type="button"
                   key={tag}
@@ -176,28 +176,26 @@ const ModalCalificar = ({
             </div>
           </div>
         )}
+
         <div className="mt-4">
           <h3 className="text-gray-500">Materia</h3>
           <select
             value={materia}
-            
-            onChange={(e) => {
-              console.log("Cambio detectado en select:", e.target.value); // 👀 Verifica si el evento se ejecuta
-              setMateria(e.target.value);
-            }}
+            onChange={(e) => setMateria(e.target.value)}
             className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-gray-400 "
           >
             {professorMaterias.length > 0 ? (
-              professorMaterias.map((materia) => (
+              professorMaterias.map((materia: any) => (
                 <option key={materia.id} value={materia.nombre}>
-                  {materia.nombre}
+                  {(materia as any).nombre}
                 </option>
               ))
             ) : (
               <option value="">No hay materias disponibles</option>
             )}
-          </select> 
+          </select>
         </div>
+
         <div className="mt-4">
           <h3 className="text-gray-500">Añadir un comentario (Opcional)</h3>
           <textarea
@@ -212,7 +210,7 @@ const ModalCalificar = ({
             type="button"
             className="px-4 py-2 rounded-lg text-sm font-semibold text-center transition-colors 
             duration-200 bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            onClick={(e) => handleSubmit(e)}
+            onClick={handleSubmit}
           >
             Enviar Calificación
           </button>

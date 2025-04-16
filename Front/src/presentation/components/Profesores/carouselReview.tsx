@@ -49,7 +49,7 @@ const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
             <SwiperSlide key={index}>
               <div className="flex-none w-full relative group rounded-lg overflow-hidden shadow-md bg-white border border-gray-300 p-6 h-[200px] flex flex-col justify-between">
                 <div className="flex justify-center pt-1 text-xs text-gray-400">
-                  {review.materia}
+                  {(review as any).materia} 
                 </div>
                 <p className="text-gray-600 italic text-md text-center">
                   "{review.comentario}"
@@ -57,10 +57,10 @@ const ReviewCarousel = ({ reviews }: { reviews?: Review[] }) => {
 
                 <div className="text-center ">
                   <div className="flex justify-center mt-1 text-yellow-500">
-                    <StarRating rating={review.estrellas} />
+                    <StarRating rating={(review as any).estrellas} />
                   </div>
                   <div className="flex justify-center pt-1 text-xs text-gray-400">
-                    {formatearFecha(review.fecha_creacion)}
+                    {formatearFecha((review as any).fecha_creacion)}
                   </div>
                 </div>
               </div>
