@@ -9,12 +9,10 @@ import {
   getCourseById,
   getCourses,
 } from "@/domain/repositories/coursesRepository";
-import { useRouter } from "next/router";
 import ModalEliminarMateria from "./modalEliminarMateria";
 import ModalAgregarMateria from "./modalAgregarMateria";
 import ModalEditarMateria from "./modalEditarMateria";
 import { PlusIcon } from "@heroicons/react/24/solid";
-import { Button } from "flowbite-react";
 
 type Course = { nombre: string; id: string };
 
@@ -76,40 +74,40 @@ const MateriaAdmin = () => {
 
   // Columns
   const columns = useMemo<MRT_ColumnDef<Course>[]>(
-    () => [
-      {
-        accessorKey: "nombre",
-        header: "Nombre de la Materia",
-      },
-      {
-        accessorKey: "acciones",
-        header: "Acciones",
-        enableSorting: false,
-        enableColumnActions: false,
-        muiTableHeadCellProps: { sx: { textAlign: "right" } },
-        muiTableBodyCellProps: { sx: { textAlign: "right" } },
-        Cell: ({ row }) => (
-          <div className="flex flex-col sm:flex-row justify-end sm:space-x-2 space-y-2 sm:space-y-0">
-            <button
-              type="button"
-              className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
-              onClick={() => handleEdit(row.original.id)}
-            >
-              Editar
-            </button>
-            <button
-              type="button"
-              className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-red-500 text-white rounded-lg hover:bg-red-700 transition"
-              onClick={() => handleDeleteClick(row.original)}
-            >
-              Borrar
-            </button>
-          </div>
-        ),
-      },
-    ],
-    []
-  );
+  () => [
+    {
+      accessorKey: "nombre",
+      header: "Nombre de la Materia",
+    },
+    {
+      accessorKey: "acciones",
+      header: "Acciones",
+      enableSorting: false,
+      enableColumnActions: false,
+      muiTableHeadCellProps: { align: "right", sx: { pr: 6.5 } },
+      muiTableBodyCellProps: { align: "right"},
+      Cell: ({ row }) => (
+        <div className="flex w-full justify-end items-center space-x-2">
+          <button
+            type="button"
+            className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+            onClick={() => handleEdit(row.original.id)}
+          >
+            Editar
+          </button>
+          <button
+            type="button"
+            className="px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-sm bg-red-500 text-white rounded-lg hover:bg-red-700 transition"
+            onClick={() => handleDeleteClick(row.original)}
+          >
+            Borrar
+          </button>
+        </div>
+      ),
+    },
+  ],
+  []
+);
 
   // Table instance
   const table = useMaterialReactTable({ columns, data: materias });
@@ -129,7 +127,7 @@ const MateriaAdmin = () => {
         <div className="flex justify-center">
           <button
             type="button"
-            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white text-black border border-white rounded-full hover:border-green-600 hover:bg-green-600 transition duration-200 shadow-lg"
+            className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-white text-black border border-white rounded-full hover:bg-green-600 hover:border-green-600 transition duration-200 shadow-lg"
             onClick={handleAddMateriaClick}
           >
             <PlusIcon className="w-5 h-5 md:w-6 md:h-6" />
