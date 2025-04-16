@@ -7,8 +7,7 @@ import {
 import {
   deleteProfessor,
   getProfessorById,
-  getProfessors,
-  getCourses,
+  getProfessors
 } from "@/domain/repositories/professorRepository";
 import { useRouter } from "next/router";
 import ModalEliminarProfe from "./modalEliminarProfe";
