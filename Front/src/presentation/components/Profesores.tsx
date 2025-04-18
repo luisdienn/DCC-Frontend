@@ -22,6 +22,9 @@ const Profesores = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize] = useState(9); // Cantidad de elementos por página
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+
   useEffect(() => {
     const fetchProfessors = async () => {
       try {
@@ -48,7 +51,11 @@ const Profesores = () => {
   }, []);
 
   // Calcular los profesores de la página actual
-  const paginatedProfessors = professors.slice(
+  const filteredProfessors = professors.filter((prof) =>
+    `${prof.nombre} ${prof.apellidos}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  const paginatedProfessors = filteredProfessors.slice(
     currentPage * pageSize,
     (currentPage + 1) * pageSize
   );
@@ -72,6 +79,20 @@ const Profesores = () => {
           Profesores
         </h1>
       </section>
+
+      {/* Barra de búsqueda */}
+      <div className="w-full flex justify-center mt-8 px-4">
+        <input
+          type="text"
+          placeholder="Buscar profesor por nombre o apellidos..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(0);
+          }}
+          className="w-full max-w-2xl px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+        />
+      </div>
 
       <div className="max-w-7xl w-full mx-auto p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading ? (

@@ -24,7 +24,7 @@ const Navbar = () => {
   } = useNavbar();
 
   const isAuthenticated = !!session;
-  const userProfileImage = session?.user?.image || "https://randomuser.me/api/portraits/men/43.jpg";
+  const userProfileImage = session?.user?.image || "https://static.vecteezy.com/system/resources/thumbnails/005/276/776/small/logo-icon-person-on-white-background-free-vector.jpg";
 
   const isActive = (path: string) => pathname === path ? "text-[#006aea] font-bold dark:text-white" : "text-[#00479b] dark:text-[#e4e4e6]";
 

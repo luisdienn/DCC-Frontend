@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       "t4.ftcdn.net",
       "images.vexels.com", // ❗️ Quité el "https://" porque solo debe ir el dominio
       "lh3.googleusercontent.com",
+      "static.vecteezy.com"
     ],
   },
 };

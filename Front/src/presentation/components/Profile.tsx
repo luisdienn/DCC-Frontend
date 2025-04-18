@@ -16,7 +16,7 @@ const Profile = () => {
   const [user, setUser] = useState(null);
 
   const userProfileImage =
-    session?.user?.image || "https://randomuser.me/api/portraits/women/43.jpg";
+    session?.user?.image || "https://static.vecteezy.com/system/resources/thumbnails/005/276/776/small/logo-icon-person-on-white-background-free-vector.jpg";
   const userName = session?.user?.name || "Usuario Desconocido";
   const userEmail = session?.user?.email || "No disponible";
 
