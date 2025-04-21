@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user }: { account: Account | null; user: User }) {
       if (account?.provider === "google") {
-        const response = await fetch("http://localhost:8080/auth/google-login", {
+        const response = await fetch("https://calificandoandoapi.azurewebsites.net/auth/google-login", {
           method: "POST",  // 📌 Asegurar que es POST
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: user.email, name: user.name }),
