@@ -34,12 +34,19 @@ const Login = () => {
   }
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-[#fdfefe] dark:bg-[#002855]">
-      <div className="bg-white dark:bg-[#003366] shadow-xl rounded-lg p-8 w-96 text-center">
+    <main className="relative flex items-center justify-center min-h-screen bg-[#fdfefe] dark:bg-[#002855] overflow-hidden">
+      {/* Fondo decorativo con opacidad */}
+      <div
+        className="absolute inset-0 bg-[url('/Background.png')] bg-cover bg-center opacity-15 z-0"
+        aria-hidden="true"
+      />
+  
+      {/* Contenedor del login */}
+      <div className="relative z-10 bg-white dark:bg-[#003366] shadow-xl rounded-lg p-8 w-96 text-center">
         <h2 className="text-2xl font-semibold text-[#003366] dark:text-[#e4e4e6] mt-4">
           Iniciar Sesión
         </h2>
-
+  
         <form className="mt-6">
           <button
             type="button"
