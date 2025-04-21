@@ -1,11 +1,15 @@
 "use client";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, useSession, signOut} from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    signOut({ redirect: false });
+  }, []);
 
   // ✅ Evitar que la pantalla de Login sea visible si ya está autenticado
   useEffect(() => {

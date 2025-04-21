@@ -81,32 +81,6 @@ const Profile = () => {
                 Universidad Cenfotec
               </p>
             </div>
-
-            {/* Calificaciones y Comentarios */}
-            <div className="flex flex-wrap justify-center space-x-6 mt-8">
-              {/* Calificaciones */}
-              <div className="p-6 bg-[#fdfefe] dark:bg-blue-700 rounded-xl shadow-md w-48 text-center">
-                <span className="text-3xl font-bold text-[#002855] dark:text-white">
-                  0
-                </span>
-                <div className="text-md text-blue-400 dark:text-blue-300 flex items-center justify-center mt-2">
-                  <FontAwesomeIcon icon={faStar} className="mr-2" />{" "}
-                  Calificaciones
-                </div>
-              </div>
-
-              {/* Comentarios */}
-              {/* <div className="p-6 bg-[#fdfefe] dark:bg-blue-700 rounded-xl shadow-md w-48 text-center">
-                <span className="text-3xl font-bold text-[#002855] dark:text-white">
-                  0
-                </span>
-                <div className="text-md text-blue-400 dark:text-blue-300 flex items-center justify-center mt-2">
-                  <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
-                  Respuestas
-                </div>
-              </div> */}
-            </div>
-
             {/* Footer */}
             <div className="mt-10 py-6 border-t border-blue-400 dark:border-blue-300">
               <p className="text-lg text-[#002855] dark:text-white font-medium">
