@@ -7,9 +7,9 @@ const Login = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    signOut({ redirect: false });
-  }, []);
+  // useEffect(() => {
+  //   signOut({ redirect: false });
+  // }, []);
 
   // ✅ Evitar que la pantalla de Login sea visible si ya está autenticado
   useEffect(() => {
